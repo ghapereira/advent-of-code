@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-    inputName := "1.input"
+    inputName := "inputs/1.input"
     f, err := os.Open(inputName)
     if err != nil {
         log.Fatal(err)
