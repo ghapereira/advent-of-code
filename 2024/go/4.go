@@ -36,6 +36,8 @@ func main() {
     safeLevels := 0
     for scanner.Scan() {
         report := scanner.Text()
+
+        // TODO: run async and compare performance/memory usage
         sLevels := strings.Split(report, " ")
         levels := make([]int, len(sLevels))
         for i, l := range sLevels {
@@ -112,6 +114,15 @@ func getRetrySlice(levels []int, breakPoint int) []int {
     s1 := levels[:breakPoint]
     s2 := levels[breakPoint+1:]
     s3 := slices.Concat(nil, s1, s2)
+
+    // TODO: compare s3 vs sx performance/memory usage (copy vs slices.concat)
+    /*
+    sc1 := make([]int, len(s1))
+    sc2 := make([]int, len(s2))
+    copy(sc1, s1)
+    copy(sc2, s2)
+    sx := append(sc1, sc2...)
+    */
 
     return s3
 }
