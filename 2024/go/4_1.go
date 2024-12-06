@@ -63,8 +63,8 @@ func (wsb *WordSearchBox) CheckXmas(i, j int) int {
     canLookLeft := (j - 3) >= 0
     
     // TODO: simplify this with a loop in (-n,...,0,...,n) X (-n,...,0,...,n)
-    //       and embedding bounds checks to simplify and generalize for search
-    //       string size
+    //       and embedding bounds checks to generalize for search string size
+    // But this here is not TOO bad - kind of a loop unrolling device. And worked.
     if canLookUp {
         // check 1
         if (wsb.WordMatrix[i-1][j] == 'M') && (wsb.WordMatrix[i-2][j] == 'A') && (wsb.WordMatrix[i-3][j] == 'S') {
