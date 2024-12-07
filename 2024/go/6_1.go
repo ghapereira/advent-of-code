@@ -31,6 +31,8 @@ const (
 )
 
 func (l *LabMap) TurnGuard() {
+	l.VisitCurrentPosition()
+
 	switch l.GuardOrientation {
 	case Up:
 		l.GuardOrientation = Right
@@ -121,6 +123,10 @@ func processFile(fileName string) *LabMap {
 	return l
 }
 
+func (l *LabMap) VisitCurrentPosition() {
+	l.Map[l.GuardPos.X][l.GuardPos.Y] = rune(Visited)
+}
+
 func (l *LabMap) ShowMap() {
 	totalVisited := 0
 
@@ -151,13 +157,7 @@ func (l *LabMap) ComputeGuardWalk() int {
 		guardStillInLab = l.MoveGuard()
 	}
 
-	// TODO: as of now, the total in l.UniqueWalkedCells() is wrong - it's
-	// counting more valid moves than actually happened. The total count
-	// on l.ShowMap() is right, though, and I'm using it - but I should fix
-	// l.UniqueWalkedCells. It's not off by far, and I only update the number
-	// in one place, so it should not be too hard to find the issue
-	l.ShowMap()
-
+	// l.ShowMap()
 	return l.UniqueWalkedCells
 }
 
@@ -165,7 +165,8 @@ func (l *LabMap) ComputeGuardWalk() int {
 // Returns whether they leave map boundaries
 func (l *LabMap) MoveGuard() bool {
 	if l.NextMoveLeaveBounds() {
-		l.Map[l.GuardPos.X][l.GuardPos.Y] = rune(Visited)
+		l.UniqueWalkedCells++
+		l.VisitCurrentPosition()
 		return false
 	}
 
@@ -251,7 +252,7 @@ func (l *LabMap) PeekNextMove() string {
 }
 
 func (l *LabMap) GuardStep() {
-	l.Map[l.GuardPos.X][l.GuardPos.Y] = rune(Visited)
+	l.VisitCurrentPosition()
 
 	switch l.GuardOrientation {
 	case Up:
