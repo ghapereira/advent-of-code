@@ -65,7 +65,6 @@ func processFile(fileName string) int {
 	f, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
-		os.Exit(-1)
 	}
 
 	defer f.Close()
@@ -140,7 +139,6 @@ func (pr *PrecedenceRules) GetFixedUpdateResult(line string) (int, bool) {
 	oddNumberOfPages := (len(update) % 2) != 0
 	if !oddNumberOfPages {
 		log.Fatal("should have an odd number of pages!")
-		os.Exit(-1)
 	}
 
 	midpoint, _ := strconv.Atoi(update[(len(update)-1)/2])
