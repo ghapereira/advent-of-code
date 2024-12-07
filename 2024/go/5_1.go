@@ -76,9 +76,6 @@ func processFile(fileName string) int {
 	pr.init()
 
 	middleSum := 0
-
-	currentLine := 0
-
 	firstSection := true
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -91,8 +88,6 @@ func processFile(fileName string) int {
 		case true:
 			pr.AddOrderingRules(line)
 		case false:
-			currentLine += 1
-			fmt.Printf("line %d:\n", currentLine)
 			v, valid := pr.CheckUpdate(line)
 			if valid {
 				middleSum += v
@@ -115,20 +110,21 @@ func (pr *PrecedenceRules) AddOrderingRules(line string) {
 // Returns the midpoint if update is valid (0 otherwise), and whether the update is valid.
 func (pr *PrecedenceRules) CheckUpdate(line string) (int, bool) {
 	update := strings.Split(line, ",")
-	fmt.Println(update)
+
 	lenUpdate := len(update)
 	for i := 0; i < lenUpdate; i++ {
 		value, _ := strconv.Atoi(update[i])
+		if !pr.Has(value) {
+			continue
+		}
 		for j := i + 1; j < lenUpdate; j++ {
 			page, _ := strconv.Atoi(update[j])
-			// fmt.Printf("\tchecking if %d depends on %d\n", value, page)
-			if pr.Has(value) && pr.contents[value].Has(page) {
+			dependencyExists := pr.contents[value].Has(page)
+			if dependencyExists {
 				return 0, false
 			}
 		}
 	}
-
-	// if any rule is violated, return 0, false
 
 	oddNumberOfPages := (len(update) % 2) != 0
 	if !oddNumberOfPages {
