@@ -194,7 +194,7 @@ func (l *LabMap) MoveGuard() bool {
 func (l *LabMap) NextMoveLeaveBounds() bool {
 	switch l.GuardOrientation {
 	case Up:
-		if l.GuardPos.Y == 0 {
+		if l.GuardPos.X == 0 {
 			return true
 		}
 	case Right:
